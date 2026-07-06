@@ -44,6 +44,14 @@
 
 ---
 
+Создан сервисный аккаунт Terraform с необходимыми IAM-ролями.
+
+![Service Account](img/service-account.png)  
+
+Создан сервисный аккаунт Terraform с необходимыми IAM-ролями.
+
+![Service Account](img/service-account.png)  
+
  Основная инфраструктура (`terraform/`)
 
 | Файл | Назначение |
@@ -56,3 +64,7 @@
 | `security.tf` | Security Groups *(в разработке)* |
 | `registry.tf` | Container Registry *(в разработке)* |
 | `kubernetes.tf` | Managed Kubernetes *(в разработке)* |
+
+Создана виртуальная сеть и три подсети в разных зонах доступности.
+
+![Network](img/network_subnet.png)
