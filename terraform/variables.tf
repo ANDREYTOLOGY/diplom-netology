@@ -13,3 +13,8 @@ variable "folder_id" {
 variable "default_zone" {
   default = "ru-central1-a"
 }
+
+variable "kubernetes_version" {
+  type    = string
+  default = "1.33"
+}

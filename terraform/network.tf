@@ -1,5 +1,7 @@
 resource "yandex_vpc_network" "diplom" {
   name = "diplom-vpc"
+
+  labels = local.labels
 }
 
 resource "yandex_vpc_subnet" "subnet_a" {
