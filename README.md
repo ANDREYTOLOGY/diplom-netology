@@ -6,9 +6,12 @@
 
 Проект разделен на две независимые части.
 
+Создана виртуальная сеть и три подсети в разных зонах доступности.
 `bootstrap/`
 
-Содержит конфигурацию Terraform, предназначенную для создания базовой инфраструктуры, необходимой для работы основного проекта:
+Содержит конфигурацию Terraform, предназначенную для создания базовой инфраструктуры, необходимой для работы основного проекта. 
+
+Создаются следующие ресурсы:
 
 - Service Account;
 - IAM-роли;
@@ -19,14 +22,16 @@
 
  `terraform/`
 
-Содержит конфигурацию основной инфраструктуры проекта:
+Содержит конфигурацию основной инфраструктуры проекта.
+
+Создаются следующие ресурсы:
 
 - VPC;
-- подсети;
-- Security Groups;
-- Managed Kubernetes;
+- три подсети в разных зонах доступности;
 - Container Registry;
-- остальные облачные ресурсы.
+- Managed Kubernetes Cluster;
+- Node Group;
+- IAM Service Accounts.
 
 
 ### Выполненные этапы
@@ -37,10 +42,13 @@
 
 | Файл | Назначение |
 |------|------------|
-| `iam.tf` | Service Account, IAM-роли, Static Access Key |
-| `kms.tf` | Создание KMS-ключа |
+| `provider.tf` | Настройка провайдера |
+| `versions.tf` | Версия Terraform и Provider |
+| `variables.tf` | Переменные проекта |
+| `iam.tf` | Service Account, IAM-роли и Static Access Key |
+| `kms.tf` | Создание KMS Key |
 | `bucket.tf` | Создание Object Storage для Terraform State |
-| `outputs.tf` | Вывод идентификаторов созданных ресурсов |
+| `outputs.tf` | Вывод идентификаторов ресурсов |
 
 ---
 
@@ -48,9 +56,9 @@
 
 ![Service Account](img/service-account.png)  
 
-Создан сервисный аккаунт Terraform с необходимыми IAM-ролями.
+Создан Object Storage для хранения Terraform State.
 
-![Service Account](img/service-account.png)  
+![Storage](img/storage_bucket.png)
 
  Основная инфраструктура (`terraform/`)
 
@@ -58,13 +66,47 @@
 |------|------------|
 | `backend.tf` | Подключение удаленного backend |
 | `providers.tf` | Настройка провайдера Yandex Cloud |
-| `versions.tf` | Версии Terraform и Provider |
+| `versions.tf` | Версия Terraform и Provider |
 | `variables.tf` | Переменные проекта |
-| `network.tf` | Создание VPC и трех подсетей |
-| `security.tf` | Security Groups *(в разработке)* |
-| `registry.tf` | Container Registry *(в разработке)* |
-| `kubernetes.tf` | Managed Kubernetes *(в разработке)* |
+| `locals.tf` | Общие параметры проекта |
+| `network.tf` | VPC и три подсети |
+| `registry.tf` | Yandex Container Registry |
+| `iam.tf` | Service Accounts и IAM-роли Kubernetes |
+| `k8s.tf` | Managed Kubernetes Cluster |
+| `node-group.tf` | Kubernetes Node Group |
+| `outputs.tf` | Вывод информации о созданной инфраструктуре |
+
 
 Создана виртуальная сеть и три подсети в разных зонах доступности.
 
 ![Network](img/network_subnet.png)
+
+### Задание 2. Создание Kubernetes кластера 
+
+Для выполнения задания был выбран сервис **Yandex Managed Service for Kubernetes**.
+
+С помощью Terraform был развернут Kubernetes-кластер со следующими параметрами:
+
+- региональный мастер Kubernetes;
+- три worker-ноды, размещенные в разных зонах доступности (`ru-central1-a`, `ru-central1-b`, `ru-central1-d`);
+- прерываемые виртуальные машины (Preemptible) для снижения стоимости инфраструктуры;
+- конфигурация worker-нод:
+  - 2 vCPU;
+  - 2 ГБ RAM;
+  - доля CPU 20%;
+  - HDD-диск объемом 35 ГБ.
+
+После создания кластера были получены учетные данные для подключения через `kubectl` и выполнена проверка его работоспособности.
+
+Кластер успешно создан и находится в состоянии **Running**.
+
+![Kubernetes Cluster](img/kubernetes_cluster.png)
+
+Проверка зарегистрированных узлов кластера: 
+
+![Kubectl get nodes](img/kubectl_get_nodes.png)
+
+Проверка системных компонентов:
+
+![Kubectl get pods -A](img/kubectl_get_pods.png)
+
