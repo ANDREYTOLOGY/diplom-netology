@@ -110,3 +110,49 @@
 
 ![Kubectl get pods -A](img/kubectl_get_pods.png)
 
+### Задание 3. Создание тестового приложения
+
+В рамках данного этапа было подготовлено тестовое веб-приложение на базе nginx, отдающее статическую HTML-страницу.
+
+Структура приложения:
+
+| Файл | Назначение |
+|------|------------|
+| `Dockerfile` | Сборка Docker-образа на базе nginx |
+| `nginx.conf` | Конфигурация веб-сервера nginx |
+| `index.html` | Статическая страница тестового приложения |
+
+Для проверки состояния приложения реализован endpoint `/health`, возвращающий HTTP-ответ `200 OK`.
+
+Docker-образ приложения был собран и опубликован в Yandex Container Registry:
+
+`cr.yandex/${REGISTRY_ID}/diplom-app:v1.0.0`
+
+Проверка наличия образа в Container Registry:
+
+![Container Registry Image](img/container_registry.png)
+
+### Задание 4. Деплой приложения в Kubernetes
+
+Для развертывания тестового приложения были подготовлены Kubernetes-манифесты.
+
+| Файл | Назначение |
+|------|------------|
+| `namespace.yaml` | Создание отдельного namespace `diplom-app` |
+| `deployment.yaml` | Развертывание двух реплик тестового приложения |
+| `service.yaml` | Создание внутреннего сервиса типа `ClusterIP` |
+
+Приложение развернуто в двух репликах. Для контейнеров настроены:
+
+- `readinessProbe` для проверки готовности приложения к приему трафика;
+- `livenessProbe` для контроля работоспособности контейнеров;
+- ограничения на использование CPU и оперативной памяти;
+- endpoint `/health`, возвращающий HTTP-код `200 OK`.
+
+Проверка состояния подов:
+
+![Kubernetes Application Pods](img/kubernetes_app_pods.png)
+
+Проверка доступности приложения и health endpoint:
+
+![Kubernetes Application Health](img/kubernetes_app_health.png)
