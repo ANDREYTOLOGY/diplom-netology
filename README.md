@@ -156,3 +156,17 @@ Docker-образ приложения был собран и опубликов
 Проверка доступности приложения и health endpoint:
 
 ![Kubernetes Application Health](img/kubernetes_app_health.png)
+
+Для обеспечения внешнего доступа к приложению был установлен Nginx Ingress Controller.
+
+Сервис Ingress Controller имеет тип `LoadBalancer`. Yandex Cloud автоматически создает внешний Network Load Balancer и назначает публичный IP-адрес.
+
+Приложение доступно извне по HTTP на стандартном порту `80`.
+
+Проверка внешнего доступа к приложению:
+
+![Kubernetes Application External Access](img/kubernetes_app_external.png)
+
+Проверка Ingress и внешнего Load Balancer:
+
+![Kubernetes Ingress](img/kubernetes_ingress.png)
