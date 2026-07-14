@@ -159,6 +159,10 @@ Docker-образ приложения был собран и опубликов
 
 Для обеспечения внешнего доступа к приложению был установлен Nginx Ingress Controller.
 
+Установка Ingress Controller автоматизирована с помощью Terraform и Helm Provider. Terraform подключается непосредственно к создаваемому Managed Kubernetes Cluster и устанавливает Helm chart `ingress-nginx` после создания группы worker-нод.
+
+Для повышения воспроизводимости инфраструктуры Helm chart `ingress-nginx` версии `4.15.1` хранится локально в репозитории проекта. 
+
 Сервис Ingress Controller имеет тип `LoadBalancer`. Yandex Cloud автоматически создает внешний Network Load Balancer и назначает публичный IP-адрес.
 
 Приложение доступно извне по HTTP на стандартном порту `80`.
@@ -170,3 +174,5 @@ Docker-образ приложения был собран и опубликов
 Проверка Ingress и внешнего Load Balancer:
 
 ![Kubernetes Ingress](img/kubernetes_ingress.png)
+
+
