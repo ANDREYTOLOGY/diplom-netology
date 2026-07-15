@@ -176,3 +176,21 @@ Docker-образ приложения был собран и опубликов
 ![Kubernetes Ingress](img/kubernetes_ingress.png)
 
 
+### Задание 5. Развертывание системы мониторинга
+
+Для мониторинга Kubernetes-кластера используется `kube-prometheus-stack`, устанавливаемый автоматически с помощью Terraform и Helm Provider.
+
+Используется Helm-чарт версии `87.16.1`.
+
+В состав системы мониторинга входят:
+
+- Prometheus;
+- Grafana;
+- Alertmanager;
+- Prometheus Operator;
+- kube-state-metrics;
+- node-exporter.
+
+`node-exporter` автоматически развернут на каждой из трех worker-нод Kubernetes-кластера.
+
+Все основные компоненты мониторинга успешно запущены в namespace `monitoring`

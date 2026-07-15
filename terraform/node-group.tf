@@ -19,7 +19,7 @@ resource "yandex_kubernetes_node_group" "default" {
     }
 
     network_interface {
-      nat = true
+      nat = false
       subnet_ids = [
         yandex_vpc_subnet.subnet_a.id,
         yandex_vpc_subnet.subnet_b.id,
