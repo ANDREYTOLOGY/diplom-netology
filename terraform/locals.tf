@@ -3,6 +3,9 @@ locals {
 
   cluster_name = "${local.project_name}-cluster"
 
+  app_image = "cr.yandex/${yandex_container_registry.registry.id}/diplom-app:v1.0.0"
+
+
   kubernetes = {
     version = "1.33"
 

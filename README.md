@@ -193,4 +193,13 @@ Docker-образ приложения был собран и опубликов
 
 `node-exporter` автоматически развернут на каждой из трех worker-нод Kubernetes-кластера.
 
-Все основные компоненты мониторинга успешно запущены в namespace `monitoring`
+Grafana опубликована через NGINX Ingress и доступна по адресу:
+
+```
+http://<EXTERNAL_IP>/grafana
+```
+
+После установки автоматически импортируются готовые Dashboard для Kubernetes.
+
+![Grafana Dashboard](grafana-dashboards.png)
+
