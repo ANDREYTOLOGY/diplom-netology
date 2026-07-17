@@ -18,3 +18,11 @@ output "bucket_name" {
 output "kms_key_id" {
   value = yandex_kms_symmetric_key.terraform_state.id
 }
+
+output "container_registry_id" {
+  value = yandex_container_registry.registry.id
+}
+
+output "container_registry_url" {
+  value = "cr.yandex/${yandex_container_registry.registry.id}"
+}

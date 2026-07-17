@@ -92,6 +92,12 @@ resource "kubernetes_deployment_v1" "app" {
   depends_on = [
     helm_release.ingress_nginx
   ]
+
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].spec[0].container[0].image
+    ]
+  }
 }
 
 resource "kubernetes_service_v1" "app" {

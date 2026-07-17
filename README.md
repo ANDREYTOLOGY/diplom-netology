@@ -203,3 +203,32 @@ http://<EXTERNAL_IP>/grafana
 
 ![Grafana Dashboard](grafana-dashboards.png)
 
+### Задание 6. CI/CD
+
+Для автоматизации используются два GitHub Actions Workflow.
+
+#### Terraform
+
+
+При изменении файлов каталога `terraform/` автоматически выполняются:
+
+- terraform init
+- terraform validate
+- terraform plan
+- terraform apply
+
+Инфраструктура поддерживается в актуальном состоянии.
+
+![Terraform Workflow](terraform_workflow.png)
+
+#### Docker CI/CD
+
+При каждом коммите:
+
+- собирается Docker Image;
+- публикуется в Yandex Container Registry;
+- создаётся тег по SHA коммита;
+- автоматически обновляется Deployment Kubernetes;
+- выполняется Rolling Update приложения.
+
+![Terraform Workflow](docker_workflow.png)

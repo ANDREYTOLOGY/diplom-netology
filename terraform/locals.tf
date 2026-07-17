@@ -3,7 +3,7 @@ locals {
 
   cluster_name = "${local.project_name}-cluster"
 
-  app_image = "cr.yandex/${yandex_container_registry.registry.id}/diplom-app:v1.0.0"
+  app_image = "cr.yandex/${var.container_registry_id}/diplom-app:${var.app_image_tag}"
 
 
   kubernetes = {

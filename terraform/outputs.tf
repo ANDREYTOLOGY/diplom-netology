@@ -19,16 +19,18 @@ output "subnet_d_id" {
 }
 
 output "container_registry_id" {
-  description = "Yandex Container Registry ID"
-  value       = yandex_container_registry.registry.id
+  value = var.container_registry_id
 }
 
 output "container_registry_url" {
-  description = "Yandex Container Registry URL"
-  value       = "cr.yandex/${yandex_container_registry.registry.id}"
+  value = "cr.yandex/${var.container_registry_id}"
 }
 
 output "kubernetes_cluster_id" {
   description = "Managed Kubernetes cluster ID"
   value       = yandex_kubernetes_cluster.k8s.id
+}
+
+output "kubernetes_cluster_name" {
+  value = yandex_kubernetes_cluster.k8s.name
 }
