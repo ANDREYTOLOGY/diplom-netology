@@ -1,3 +1,5 @@
+# test github actions
+
 resource "yandex_vpc_network" "diplom" {
   name = "diplom-vpc"
 
