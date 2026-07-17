@@ -75,9 +75,9 @@ jobs:
 
       - name: Push image
         run: |
-          docker push \
-            cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:${{ env.IMAGE_TAG }}
-            cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:v1.0.0
+          docker push cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:${{ env.IMAGE_TAG }}
+          docker push cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:v1.0.0
+
       - name: Update deployment
         run: |
           kubectl set image deployment/diplom-app \
