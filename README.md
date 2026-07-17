@@ -15,8 +15,9 @@
 
 - Service Account;
 - IAM-роли;
-- KMS;
-- Object Storage (S3 Backend).
+- KMS ключи;
+- Object Storage Backend.
+- Container Registry. 
 
 После выполнения `bootstrap` основной Terraform использует созданный Object Storage для хранения своего состояния.
 
@@ -28,27 +29,10 @@
 
 - VPC;
 - три подсети в разных зонах доступности;
-- Container Registry;
 - Managed Kubernetes Cluster;
 - Node Group;
 - IAM Service Accounts.
 
-
-### Выполненные этапы
-
- Bootstrap (`bootstrap/`)
-
-Созданы базовые ресурсы для дальнейшей работы Terraform.
-
-| Файл | Назначение |
-|------|------------|
-| `provider.tf` | Настройка провайдера |
-| `versions.tf` | Версия Terraform и Provider |
-| `variables.tf` | Переменные проекта |
-| `iam.tf` | Service Account, IAM-роли и Static Access Key |
-| `kms.tf` | Создание KMS Key |
-| `bucket.tf` | Создание Object Storage для Terraform State |
-| `outputs.tf` | Вывод идентификаторов ресурсов |
 
 ---
 
@@ -61,20 +45,6 @@
 ![Storage](img/storage_bucket.png)
 
  Основная инфраструктура (`terraform/`)
-
-| Файл | Назначение |
-|------|------------|
-| `backend.tf` | Подключение удаленного backend |
-| `providers.tf` | Настройка провайдера Yandex Cloud |
-| `versions.tf` | Версия Terraform и Provider |
-| `variables.tf` | Переменные проекта |
-| `locals.tf` | Общие параметры проекта |
-| `network.tf` | VPC и три подсети |
-| `registry.tf` | Yandex Container Registry |
-| `iam.tf` | Service Accounts и IAM-роли Kubernetes |
-| `k8s.tf` | Managed Kubernetes Cluster |
-| `node-group.tf` | Kubernetes Node Group |
-| `outputs.tf` | Вывод информации о созданной инфраструктуре |
 
 
 Создана виртуальная сеть и три подсети в разных зонах доступности.
@@ -142,12 +112,6 @@ Docker-образ приложения был собран и опубликов
 | `deployment.yaml` | Развертывание двух реплик тестового приложения |
 | `service.yaml` | Создание внутреннего сервиса типа `ClusterIP` |
 
-Приложение развернуто в двух репликах. Для контейнеров настроены:
-
-- `readinessProbe` для проверки готовности приложения к приему трафика;
-- `livenessProbe` для контроля работоспособности контейнеров;
-- ограничения на использование CPU и оперативной памяти;
-- endpoint `/health`, возвращающий HTTP-код `200 OK`.
 
 Проверка состояния подов:
 
@@ -201,7 +165,7 @@ http://<EXTERNAL_IP>/grafana
 
 После установки автоматически импортируются готовые Dashboard для Kubernetes.
 
-![Grafana Dashboard](grafana-dashboards.png)
+![Grafana Dashboard](img/grafana-dashboards.png)
 
 ### Задание 6. CI/CD
 
@@ -219,7 +183,7 @@ http://<EXTERNAL_IP>/grafana
 
 Инфраструктура поддерживается в актуальном состоянии.
 
-![Terraform Workflow](terraform_workflow.png)
+![Terraform Workflow](img/terraform_workflow.png)
 
 #### Docker CI/CD
 
@@ -231,4 +195,23 @@ http://<EXTERNAL_IP>/grafana
 - автоматически обновляется Deployment Kubernetes;
 - выполняется Rolling Update приложения.
 
-![Terraform Workflow](docker_workflow.png)
+![CI/CD Docker Workflow](img/docker_workflow.png)
+
+
+### Заключение
+
+В ходе выполнения дипломного проекта была разработана полностью автоматизированная инфраструктура в Yandex Cloud с использованием принципов Infrastructure as Code.
+
+В рамках проекта реализованы:
+
+- создание облачной инфраструктуры с помощью Terraform;
+- хранение Terraform State в Object Storage;
+- развертывание Managed Kubernetes Cluster;
+- автоматическая установка NGINX Ingress Controller;
+- развертывание системы мониторинга на базе Prometheus и Grafana;
+- публикация тестового приложения в Kubernetes;
+- автоматическая сборка и публикация Docker-образов в Yandex Container Registry;
+- автоматическое обновление приложения с использованием GitHub Actions;
+- воспроизводимое развертывание инфраструктуры после полного удаления ресурсов.
+
+В результате получена воспроизводимая DevOps-инфраструктура, полностью соответствующая требованиям дипломного проекта и демонстрирующая практическое применение современных инструментов автоматизации, контейнеризации, оркестрации и непрерывной доставки.
