@@ -37,7 +37,7 @@ jobs:
           yc config set service-account-key key.json
           yc config set cloud-id ${{ secrets.YC_CLOUD_ID }}
           yc config set folder-id ${{ secrets.YC_FOLDER_ID }}
-
+          
       - name: Create backend config
         run: |
           cat > backend.hcl <<EOF
@@ -56,6 +56,7 @@ jobs:
           TF_VAR_yc_token: ${{ secrets.YC_TOKEN }}
           TF_VAR_cloud_id: ${{ secrets.YC_CLOUD_ID }}
           TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
+          TF_VAR_container_registry_id: ${{ secrets.REGISTRY_ID }}
         run: terraform plan
 
       - name: Terraform Apply
