@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - "app/**"
+      - ".github/workflows/docker.yml"
   workflow_dispatch:
 
 jobs:
@@ -68,13 +70,14 @@ jobs:
         run: |
           docker build \
             -t cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:${{ env.IMAGE_TAG }} \
+            -t cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:v1.0.0 \
             ./app
 
       - name: Push image
         run: |
           docker push \
             cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:${{ env.IMAGE_TAG }}
-
+            cr.yandex/${{ secrets.REGISTRY_ID }}/diplom-app:v1.0.0
       - name: Update deployment
         run: |
           kubectl set image deployment/diplom-app \
