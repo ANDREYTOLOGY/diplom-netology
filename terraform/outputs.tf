@@ -32,5 +32,7 @@ output "kubernetes_cluster_id" {
 }
 
 output "kubernetes_cluster_name" {
+    description = "Managed Kubernetes cluster name"	
   value = yandex_kubernetes_cluster.k8s.name
+
 }
